@@ -81,7 +81,7 @@
  -- Ах, мой милый, -- проговорил он, -- что вы представителисти себя, что я не могу не принимать составления и в своем стороне столь не сказать с ней,
 ```
 
-> Полные примеры генерации можно найти в ноутбуке `notebooks/rnn_generation.ipynb`.
+> Полные примеры генерации можно найти в ноутбуке `notebooks/RNN_генерация_текста.ipynb`.
 
 ---
 
@@ -89,8 +89,8 @@
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/your-username/CharRNN(war-and-peace).git
-cd CharRNN(war-and-peace)
+git clone https://github.com/your-username/CharRNN-war-and-peace.git
+cd CharRNN-war-and-peace
 ```
 
 2. Установите зависимости:
@@ -132,13 +132,13 @@ print(generated)
 ### Командная строка
 
 ```bash
-python generate.py --prompt "КНЯЗЬ АНДРЕЙ:" --method top_k --k 3 --temperature 0.8 --length 300
+python src/generate.py --prompt "КНЯЗЬ АНДРЕЙ:" --method top_k --k 3 --temperature 0.8 --length 300
 ```
 
 ### Обучение модели
 
 ```bash
-python train.py --data_path warandpeace.txt --epochs 50 --batch_size 64 --hidden_dim 256 --num_layers 2
+python src/train.py --data_path warandpeace.txt --epochs 50 --batch_size 64 --hidden_dim 256 --num_layers 2
 ```
 
 Все гиперпараметры можно настроить через аргументы командной строки или изменить в конфигурационном файле.
@@ -154,13 +154,13 @@ char-rnn-war-and-peace/
 ├── .gitignore
 │
 ├── notebooks/
-│   └── rnn_generation.ipynb       # Исходный ноутбук с экспериментами
+│   └── RNN_генератор_текста.ipynb       # Исходный ноутбук с экспериментами
 │
 ├── src/
 │   ├── model.py                   # CharLSTMModel
 │   ├── train.py                   # Скрипт обучения
 │   ├── generate.py                # Скрипт генерации
-│   └── utils.py                   # Вспомогательные функции (загрузка данных, создание последовательностей)
+│   └── utils.py                   # Вспомогательные функции
 │
 ├── configs/
 │   └── default.yaml               # Конфигурация гиперпараметров
