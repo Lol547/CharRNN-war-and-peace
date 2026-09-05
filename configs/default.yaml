@@ -1,0 +1,17 @@
+data:
+  url: "https://gist.githubusercontent.com/romaklimenko/c95f3a864828f7f034b7a33d1676e420/raw/warandpeace.txt"
+
+training:
+  epochs: 40
+  batch_size: 64
+  seq_len: 150
+  step: 25
+  lr: 5e-4
+  weight_decay: 1e-4
+  patience: 5
+
+model:
+  embedding_dim: 128
+  hidden_dim: 256
+  num_layers: 2
+  dropout: 0.3
