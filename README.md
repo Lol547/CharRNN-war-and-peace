@@ -176,7 +176,7 @@ char-rnn-war-and-peace/
 > Веса модели и информация об обучении сохранены в формате `.pt`. Для загрузки используйте код из раздела "Генерация текста".
 
 **Ссылка для скачивания:**  
-[char_rnn_war_and_peace.pt]()
+[char_rnn_war_and_peace.pt](https://drive.google.com/drive/folders/1lpoLXtrQSFIgzQ8Cvc9UxRyVsGykcrLK?usp=sharing)
 
 ---
 
