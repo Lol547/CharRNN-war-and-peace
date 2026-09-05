@@ -103,31 +103,63 @@ pip install -r requirements.txt
 - PyTorch (с поддержкой CUDA, если есть GPU)
 - torchvision, numpy, matplotlib, tqdm
 
----
-
 ## Использование
 
 ### Генерация текста
 
 ```python
-from model import CharLSTMModel
-from generate import generate_text, random_sample, top_k_sample
+from src import CharLSTMModel, generate_text, random_sample
 import torch
 
-# Загрузка модели
-model = CharLSTMModel(vocab_size=135, embedding_dim=128, hidden_dim=256, num_layers=2, dropout=0.3)
-model.load_state_dict(torch.load("checkpoints/best_model.pth"))
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# 1. Загружаем информацию о словаре и параметрах
+info = torch.load("checkpoints/char_rnn_war_and_peace_info.pt", map_location=device)
+char_to_id = info["char_to_id"]
+id_to_char = info["id_to_char"]
+vocab_size = info["vocab_size"]
+
+# 2. Создаём модель с теми же параметрами
+model = CharLSTMModel(
+    vocab_size=vocab_size,
+    embedding_dim=128,
+    hidden_dim=256,
+    num_layers=2,
+    dropout=0.3
+)
+
+# 3. Загружаем веса из чекпоинта
+checkpoint = torch.load("checkpoints/best_model.pt", map_location=device)
+model.load_state_dict(checkpoint["model_state"])
 model.eval()
 
-# Генерация с random sampling
+# 4. Генерация текста
 prompt = "КНЯЗЬ АНДРЕЙ:\n"
 generated = generate_text(
     model, prompt,
     sample_fn=lambda logits: random_sample(logits, temperature=0.8),
-    gen_length=300
+    gen_length=300,
+    char_to_id=char_to_id,
+    id_to_char=id_to_char,
+    device=device
 )
 print(generated)
 ```
+
+### Командная строка
+
+```bash
+# Greedy search
+python src/generate.py --prompt "КНЯЗЬ АНДРЕЙ:" --method greedy
+
+# Random sampling с температурой 0.8
+python src/generate.py --prompt "КНЯЗЬ АНДРЕЙ:" --method random --temperature 0.8
+
+# Top-k sampling (k=3, T=0.8)
+python src/generate.py --prompt "КНЯЗЬ АНДРЕЙ:" --method top_k --k 3 --temperature 0.8 --length 300
+```
+
+> **Важно:** При использовании CLI-скрипта `src/generate.py` путь к файлам весов (`--weights`) и информации (`--info`) можно указать явно, либо они будут искаться в папке `checkpoints/` по умолчанию.
 
 ### Командная строка
 
@@ -174,9 +206,14 @@ char-rnn-war-and-peace/
 ## Веса модели
 
 > Веса модели и информация об обучении сохранены в формате `.pt`. Для загрузки используйте код из раздела "Генерация текста".
+> 
+> Для работы необходимы два файла:
+1. **`char_rnn_war_and_peace.pt`** — чекпоинт модели (содержит веса, состояние оптимизатора, историю обучения).
+2. **`char_rnn_war_and_peace_info.pt`** — информация о словаре и гиперпараметрах.
 
-**Ссылка для скачивания:**  
-[char_rnn_war_and_peace.pt](https://drive.google.com/drive/folders/1lpoLXtrQSFIgzQ8Cvc9UxRyVsGykcrLK?usp=sharing)
+**Ссылки для скачивания:**
+- [char_rnn_war_and_peace.pt char_rnn_war_and_peace_info.pt](https://drive.google.com/drive/folders/1lpoLXtrQSFIgzQ8Cvc9UxRyVsGykcrLK?usp=sharing)
+
 
 ---
 
