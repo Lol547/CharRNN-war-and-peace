@@ -197,6 +197,9 @@ char-rnn-war-and-peace/
 ├── configs/
 │   └── default.yaml               # Конфигурация гиперпараметров
 │
+├── checkpoints/                   # (папка для весов, в .gitignore)
+│   └── best_model.pt
+│
 └── data/
     └── warandpeace.txt            # Исходный текст (загрузится при выполнении кода)
 ```
